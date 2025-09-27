@@ -14,7 +14,7 @@ export default function ActivityFeedContainer() {
         <p className="font-['Inter:Semi_Bold',_sans-serif] font-semibold h-[28px] leading-[18px] not-italic relative shrink-0 text-[16px] text-black tracking-[0.16px] w-[202px]" data-node-id="23:2941">
           Activity Feed
         </p>
-        <div className="content-stretch flex flex-col gap-[10px] items-start relative shrink-0" data-name="Activity Feed List Container" data-node-id="97:23900">
+        <div className="content-stretch flex flex-col gap-[10px] items-start relative shrink-0 overflow-y-auto max-h-[400px]" data-name="Activity Feed List Container" data-node-id="97:23900">
           <div className="content-stretch flex flex-col gap-[10px] items-start relative shrink-0" data-name="Activity Feed Item Container" data-node-id="67:41047">
             <div className="box-border content-stretch flex flex-col gap-[20px] items-start justify-center pb-[5px] pt-0 px-0 relative shrink-0 w-[246px]" data-name="Activity Feed Item Container" data-node-id="64:40812">
               <div aria-hidden="true" className="absolute border-[0px_0px_1px] border-[rgba(0,0,0,0.1)] border-solid inset-0 pointer-events-none" />

@@ -1,8 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
+import DataTable from '@/components/ui/DataTable';
 
 // Page Header Component from Figma
 const PageHeader = () => {
@@ -179,64 +181,73 @@ const FilterSection = () => {
 };
 
 export default function Property() {
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
+  // Mock property data with address tooltips
+  const properties = [
+    { id: '1', parcelNumber: 'P001', propertyAddress: '123 Main St...', propertyAddressFull: '123 Main St, Anytown, ST 12345', ownerName: 'John Smith', propertyType: 'Residential', taxValue: '$250,000', lastAssessment: '01/15/2024', status: 'Active' },
+    { id: '2', parcelNumber: 'P002', propertyAddress: '456 Oak Ave...', propertyAddressFull: '456 Oak Ave, Anytown, ST 12345', ownerName: 'Jane Doe', propertyType: 'Commercial', taxValue: '$450,000', lastAssessment: '03/22/2024', status: 'Active' },
+    { id: '3', parcelNumber: 'P003', propertyAddress: '789 Pine Rd...', propertyAddressFull: '789 Pine Rd, Anytown, ST 12345', ownerName: 'Bob Johnson', propertyType: 'Residential', taxValue: '$180,000', lastAssessment: '02/10/2024', status: 'Inactive' },
+    { id: '4', parcelNumber: 'P004', propertyAddress: '321 Elm St...', propertyAddressFull: '321 Elm St, Anytown, ST 12345', ownerName: 'Alice Brown', propertyType: 'Residential', taxValue: '$320,000', lastAssessment: '05/18/2024', status: 'Active' },
+    { id: '5', parcelNumber: 'P005', propertyAddress: '654 Maple Dr...', propertyAddressFull: '654 Maple Dr, Anytown, ST 12345', ownerName: 'Charlie Wilson', propertyType: 'Industrial', taxValue: '$750,000', lastAssessment: '08/30/2024', status: 'Active' },
+    { id: '6', parcelNumber: 'P006', propertyAddress: '987 Cedar Ln...', propertyAddressFull: '987 Cedar Ln, Anytown, ST 12345', ownerName: 'Diana Davis', propertyType: 'Residential', taxValue: '$280,000', lastAssessment: '11/12/2024', status: 'Active' },
+    { id: '7', parcelNumber: 'P007', propertyAddress: '1292 West Berry...', propertyAddressFull: '1292 West Berry Street, Scranton, PA 38299', ownerName: 'Amy Brown', propertyType: 'Residential', taxValue: '$195,000', lastAssessment: '07/05/2024', status: 'Active' },
+    { id: '8', parcelNumber: 'P008', propertyAddress: '555 Birch Blvd...', propertyAddressFull: '555 Birch Blvd, Anytown, ST 12345', ownerName: 'Frank Miller', propertyType: 'Commercial', taxValue: '$520,000', lastAssessment: '04/14/2024', status: 'Inactive' },
+    { id: '9', parcelNumber: 'P009', propertyAddress: '777 Spruce St...', propertyAddressFull: '777 Spruce St, Anytown, ST 12345', ownerName: 'Grace Taylor', propertyType: 'Residential', taxValue: '$310,000', lastAssessment: '09/28/2024', status: 'Active' },
+    { id: '10', parcelNumber: 'P010', propertyAddress: '888 Willow Way...', propertyAddressFull: '888 Willow Way, Anytown, ST 12345', ownerName: 'Henry Anderson', propertyType: 'Residential', taxValue: '$275,000', lastAssessment: '12/03/2024', status: 'Active' },
+  ];
+
+  // Table columns configuration
+  const columns = [
+    { key: 'parcelNumber', label: 'Parcel Number', width: '128px', sortable: true },
+    { key: 'propertyAddress', label: 'Property Address', width: '212px', sortable: true },
+    { key: 'ownerName', label: 'Owner Name', width: '212px', sortable: true },
+    { key: 'propertyType', label: 'Property Type', width: '212px', sortable: true },
+    { key: 'taxValue', label: 'Tax Value', width: '212px', sortable: true },
+    { key: 'lastAssessment', label: 'Last Assessment', width: '212px', sortable: true },
+    { key: 'actions', label: 'Actions', width: '128px', sortable: false },
+  ];
+
+  // Calculate pagination
+  const totalItems = properties.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = properties.slice(startIndex, endIndex);
+
+  const handleRowClick = (property: any) => {
+    router.push(`/property/${property.id}`);
+  };
+
+  const handleViewClick = (property: any) => {
+    router.push(`/property/${property.id}`);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="min-h-screen bg-white relative">
       <Header />
       <PageHeader />
       <FilterSection />
       <div className="pb-[50px] px-[16px]">
-        <div className="w-full">
-          {/* Table Headers */}
-          <div className="flex bg-gray-50 border-b border-gray-200 px-4 py-3">
-            <div className="w-32 font-semibold text-sm text-gray-700">Parcel Number</div>
-            <div className="flex-1 font-semibold text-sm text-gray-700">Property Address</div>
-            <div className="flex-1 font-semibold text-sm text-gray-700">Owner Name</div>
-            <div className="w-24 font-semibold text-sm text-gray-700">Property Type</div>
-            <div className="w-24 font-semibold text-sm text-gray-700">Tax Value</div>
-            <div className="w-24 font-semibold text-sm text-gray-700">Last Assessment</div>
-            <div className="w-20 font-semibold text-sm text-gray-700">Status</div>
-          </div>
-
-          {/* Table Rows */}
-          <div className="max-h-[400px] overflow-y-auto">
-            {[
-              { id: '1', parcelNumber: 'P001', propertyAddress: '123 Main St, Anytown, ST 12345', ownerName: 'John Smith', propertyType: 'Residential', taxValue: '$250,000', lastAssessment: '01/15/2024', status: 'Active' },
-              { id: '2', parcelNumber: 'P002', propertyAddress: '456 Oak Ave, Anytown, ST 12345', ownerName: 'Jane Doe', propertyType: 'Commercial', taxValue: '$450,000', lastAssessment: '03/22/2024', status: 'Active' },
-              { id: '3', parcelNumber: 'P003', propertyAddress: '789 Pine Rd, Anytown, ST 12345', ownerName: 'Bob Johnson', propertyType: 'Residential', taxValue: '$180,000', lastAssessment: '02/10/2024', status: 'Inactive' },
-              { id: '4', parcelNumber: 'P004', propertyAddress: '321 Elm St, Anytown, ST 12345', ownerName: 'Alice Brown', propertyType: 'Residential', taxValue: '$320,000', lastAssessment: '05/18/2024', status: 'Active' },
-              { id: '5', parcelNumber: 'P005', propertyAddress: '654 Maple Dr, Anytown, ST 12345', ownerName: 'Charlie Wilson', propertyType: 'Industrial', taxValue: '$750,000', lastAssessment: '08/30/2024', status: 'Active' },
-              { id: '6', parcelNumber: 'P006', propertyAddress: '987 Cedar Ln, Anytown, ST 12345', ownerName: 'Diana Davis', propertyType: 'Residential', taxValue: '$280,000', lastAssessment: '11/12/2024', status: 'Active' },
-              { id: '7', parcelNumber: 'P007', propertyAddress: '1292 West Berry Street, Scranton, PA 38299', ownerName: 'Amy Brown', propertyType: 'Residential', taxValue: '$195,000', lastAssessment: '07/05/2024', status: 'Active' },
-              { id: '8', parcelNumber: 'P008', propertyAddress: '555 Birch Blvd, Anytown, ST 12345', ownerName: 'Frank Miller', propertyType: 'Commercial', taxValue: '$520,000', lastAssessment: '04/14/2024', status: 'Inactive' },
-              { id: '9', parcelNumber: 'P009', propertyAddress: '777 Spruce St, Anytown, ST 12345', ownerName: 'Grace Taylor', propertyType: 'Residential', taxValue: '$310,000', lastAssessment: '09/28/2024', status: 'Active' },
-              { id: '10', parcelNumber: 'P010', propertyAddress: '888 Willow Way, Anytown, ST 12345', ownerName: 'Henry Anderson', propertyType: 'Residential', taxValue: '$275,000', lastAssessment: '12/03/2024', status: 'Active' },
-            ].map((property) => (
-              <div
-                key={property.id}
-                onClick={() => window.location.href = `/property/${property.id}`}
-                className="flex border-b border-gray-100 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors"
-              >
-                <div className="w-32 text-sm text-gray-900">{property.parcelNumber}</div>
-                <div className="flex-1 text-sm text-gray-900">{property.propertyAddress}</div>
-                <div className="flex-1 text-sm text-gray-900">{property.ownerName}</div>
-                <div className="w-24 text-sm text-gray-900">{property.propertyType}</div>
-                <div className="w-24 text-sm text-gray-900">{property.taxValue}</div>
-                <div className="w-24 text-sm text-gray-600">{property.lastAssessment}</div>
-                <div className="w-20">
-                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                    property.status === 'Active' 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-red-100 text-red-800'
-                  }`}>
-                    {property.status}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <DataTable
+          columns={columns}
+          data={currentData}
+          onRowClick={handleRowClick}
+          onViewClick={handleViewClick}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+        />
       </div>
-      <div className="fixed bottom-0 left-0 right-0 z-10">
+      <div className="fixed bottom-0 left-0 right-0 z-[100]">
         <GlobalFooter />
       </div>
     </div>

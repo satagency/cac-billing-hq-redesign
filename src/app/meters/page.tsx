@@ -1,8 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
+import DataTable from '@/components/ui/DataTable';
 
 // Page Header Component from Figma
 const PageHeader = () => {
@@ -179,64 +181,73 @@ const FilterSection = () => {
 };
 
 export default function Meters() {
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
+  // Mock meter data with address tooltips
+  const meters = [
+    { id: '1', meterNumber: 'M001', customerName: 'John Smith', serviceAddress: '123 Main St...', serviceAddressFull: '123 Main St, Anytown, ST 12345', meterType: 'Water', lastReading: '1,250', installationDate: '01/15/2020', status: 'Active' },
+    { id: '2', meterNumber: 'M002', customerName: 'Jane Doe', serviceAddress: '456 Oak Ave...', serviceAddressFull: '456 Oak Ave, Anytown, ST 12345', meterType: 'Water', lastReading: '2,180', installationDate: '03/22/2020', status: 'Active' },
+    { id: '3', meterNumber: 'M003', customerName: 'Bob Johnson', serviceAddress: '789 Pine Rd...', serviceAddressFull: '789 Pine Rd, Anytown, ST 12345', meterType: 'Electric', lastReading: '5,420', installationDate: '02/10/2019', status: 'Inactive' },
+    { id: '4', meterNumber: 'M004', customerName: 'Alice Brown', serviceAddress: '321 Elm St...', serviceAddressFull: '321 Elm St, Anytown, ST 12345', meterType: 'Water', lastReading: '3,750', installationDate: '05/18/2021', status: 'Active' },
+    { id: '5', meterNumber: 'M005', customerName: 'Charlie Wilson', serviceAddress: '654 Maple Dr...', serviceAddressFull: '654 Maple Dr, Anytown, ST 12345', meterType: 'Gas', lastReading: '890', installationDate: '08/30/2020', status: 'Active' },
+    { id: '6', meterNumber: 'M006', customerName: 'Diana Davis', serviceAddress: '987 Cedar Ln...', serviceAddressFull: '987 Cedar Ln, Anytown, ST 12345', meterType: 'Water', lastReading: '1,980', installationDate: '11/12/2021', status: 'Active' },
+    { id: '7', meterNumber: 'M007', customerName: 'Amy Brown', serviceAddress: '1292 West Berry...', serviceAddressFull: '1292 West Berry Street, Scranton, PA 38299', meterType: 'Electric', lastReading: '4,320', installationDate: '07/05/2020', status: 'Active' },
+    { id: '8', meterNumber: 'M008', customerName: 'Frank Miller', serviceAddress: '555 Birch Blvd...', serviceAddressFull: '555 Birch Blvd, Anytown, ST 12345', meterType: 'Water', lastReading: '2,650', installationDate: '04/14/2019', status: 'Inactive' },
+    { id: '9', meterNumber: 'M009', customerName: 'Grace Taylor', serviceAddress: '777 Spruce St...', serviceAddressFull: '777 Spruce St, Anytown, ST 12345', meterType: 'Gas', lastReading: '1,120', installationDate: '09/28/2021', status: 'Active' },
+    { id: '10', meterNumber: 'M010', customerName: 'Henry Anderson', serviceAddress: '888 Willow Way...', serviceAddressFull: '888 Willow Way, Anytown, ST 12345', meterType: 'Water', lastReading: '3,420', installationDate: '12/03/2020', status: 'Active' },
+  ];
+
+  // Table columns configuration
+  const columns = [
+    { key: 'meterNumber', label: 'Meter Number', width: '128px', sortable: true },
+    { key: 'customerName', label: 'Customer Name', width: '212px', sortable: true },
+    { key: 'serviceAddress', label: 'Service Address', width: '212px', sortable: true },
+    { key: 'meterType', label: 'Meter Type', width: '212px', sortable: true },
+    { key: 'lastReading', label: 'Last Reading', width: '212px', sortable: true },
+    { key: 'installationDate', label: 'Installation Date', width: '212px', sortable: true },
+    { key: 'actions', label: 'Actions', width: '128px', sortable: false },
+  ];
+
+  // Calculate pagination
+  const totalItems = meters.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = meters.slice(startIndex, endIndex);
+
+  const handleRowClick = (meter: any) => {
+    router.push(`/meters/${meter.id}`);
+  };
+
+  const handleViewClick = (meter: any) => {
+    router.push(`/meters/${meter.id}`);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="min-h-screen bg-white relative">
       <Header />
       <PageHeader />
       <FilterSection />
       <div className="pb-[50px] px-[16px]">
-        <div className="w-full">
-          {/* Table Headers */}
-          <div className="flex bg-gray-50 border-b border-gray-200 px-4 py-3">
-            <div className="w-32 font-semibold text-sm text-gray-700">Meter Number</div>
-            <div className="flex-1 font-semibold text-sm text-gray-700">Customer Name</div>
-            <div className="flex-1 font-semibold text-sm text-gray-700">Service Address</div>
-            <div className="w-24 font-semibold text-sm text-gray-700">Meter Type</div>
-            <div className="w-24 font-semibold text-sm text-gray-700">Last Reading</div>
-            <div className="w-24 font-semibold text-sm text-gray-700">Installation Date</div>
-            <div className="w-20 font-semibold text-sm text-gray-700">Status</div>
-          </div>
-
-          {/* Table Rows */}
-          <div className="max-h-[400px] overflow-y-auto">
-            {[
-              { id: '1', meterNumber: 'M001', customerName: 'John Smith', serviceAddress: '123 Main St, Anytown, ST 12345', meterType: 'Water', lastReading: '1,250', installationDate: '01/15/2020', status: 'Active' },
-              { id: '2', meterNumber: 'M002', customerName: 'Jane Doe', serviceAddress: '456 Oak Ave, Anytown, ST 12345', meterType: 'Water', lastReading: '2,180', installationDate: '03/22/2020', status: 'Active' },
-              { id: '3', meterNumber: 'M003', customerName: 'Bob Johnson', serviceAddress: '789 Pine Rd, Anytown, ST 12345', meterType: 'Electric', lastReading: '5,420', installationDate: '02/10/2019', status: 'Inactive' },
-              { id: '4', meterNumber: 'M004', customerName: 'Alice Brown', serviceAddress: '321 Elm St, Anytown, ST 12345', meterType: 'Water', lastReading: '3,750', installationDate: '05/18/2021', status: 'Active' },
-              { id: '5', meterNumber: 'M005', customerName: 'Charlie Wilson', serviceAddress: '654 Maple Dr, Anytown, ST 12345', meterType: 'Gas', lastReading: '890', installationDate: '08/30/2020', status: 'Active' },
-              { id: '6', meterNumber: 'M006', customerName: 'Diana Davis', serviceAddress: '987 Cedar Ln, Anytown, ST 12345', meterType: 'Water', lastReading: '1,980', installationDate: '11/12/2021', status: 'Active' },
-              { id: '7', meterNumber: 'M007', customerName: 'Amy Brown', serviceAddress: '1292 West Berry Street, Scranton, PA 38299', meterType: 'Electric', lastReading: '4,320', installationDate: '07/05/2020', status: 'Active' },
-              { id: '8', meterNumber: 'M008', customerName: 'Frank Miller', serviceAddress: '555 Birch Blvd, Anytown, ST 12345', meterType: 'Water', lastReading: '2,650', installationDate: '04/14/2019', status: 'Inactive' },
-              { id: '9', meterNumber: 'M009', customerName: 'Grace Taylor', serviceAddress: '777 Spruce St, Anytown, ST 12345', meterType: 'Gas', lastReading: '1,120', installationDate: '09/28/2021', status: 'Active' },
-              { id: '10', meterNumber: 'M010', customerName: 'Henry Anderson', serviceAddress: '888 Willow Way, Anytown, ST 12345', meterType: 'Water', lastReading: '3,420', installationDate: '12/03/2020', status: 'Active' },
-            ].map((meter) => (
-              <div
-                key={meter.id}
-                onClick={() => window.location.href = `/meters/${meter.id}`}
-                className="flex border-b border-gray-100 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors"
-              >
-                <div className="w-32 text-sm text-gray-900">{meter.meterNumber}</div>
-                <div className="flex-1 text-sm text-gray-900">{meter.customerName}</div>
-                <div className="flex-1 text-sm text-gray-600">{meter.serviceAddress}</div>
-                <div className="w-24 text-sm text-gray-900">{meter.meterType}</div>
-                <div className="w-24 text-sm text-gray-900">{meter.lastReading}</div>
-                <div className="w-24 text-sm text-gray-600">{meter.installationDate}</div>
-                <div className="w-20">
-                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                    meter.status === 'Active' 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-red-100 text-red-800'
-                  }`}>
-                    {meter.status}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <DataTable
+          columns={columns}
+          data={currentData}
+          onRowClick={handleRowClick}
+          onViewClick={handleViewClick}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+        />
       </div>
-      <div className="fixed bottom-0 left-0 right-0 z-10">
+      <div className="fixed bottom-0 left-0 right-0 z-[100]">
         <GlobalFooter />
       </div>
     </div>

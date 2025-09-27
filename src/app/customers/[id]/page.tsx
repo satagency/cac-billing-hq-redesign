@@ -80,7 +80,7 @@ export default function CustomerProfilePage() {
       <Header />
       
       {/* Search Bar */}
-      <CustomerSearchBar />
+      <CustomerSearchBar showBackButton={true} />
       
       {/* Main Content */}
       <div className="pb-[50px]" data-name="Dashboard Reset - Customers" data-node-id="13:559">
@@ -89,7 +89,7 @@ export default function CustomerProfilePage() {
           <CustomerInfoAndPaymentDue customer={mockCustomer} billingData={mockBillingData} />
 
           {/* Details and Tabbed Content + Activity Feed */}
-          <div className="flex gap-4 w-full h-[600px] overflow-hidden" data-name="Details and Tabbed Conent + Activity Feed" data-node-id="13:601">
+          <div className="relative flex gap-4 w-full h-[600px] overflow-hidden" data-name="Details and Tabbed Conent + Activity Feed" data-node-id="13:601">
             {/* Account Details */}
             <div className="flex-shrink-0 w-60" data-name="Account Details" data-node-id="13:602">
               <AccountDetails />
@@ -104,22 +104,22 @@ export default function CustomerProfilePage() {
             <div className="flex-shrink-0 w-72" data-name="Activity Feed Container" data-node-id="13:623">
               <ActivityFeedContainer />
             </div>
+
+            {/* Transaction Details Sheet - positioned within this container */}
+            <TransactionDetailsSheet
+              transaction={selectedTransaction}
+              isOpen={isSheetOpen}
+              onClose={handleCloseSheet}
+              onEdit={handleEditTransaction}
+            />
           </div>
         </div>
       </div>
 
-      {/* Global Footer */}
-      <div className="fixed bottom-0 left-0 right-0 z-10">
-        <GlobalFooter />
-      </div>
-
-      {/* Transaction Details Sheet */}
-      <TransactionDetailsSheet
-        transaction={selectedTransaction}
-        isOpen={isSheetOpen}
-        onClose={handleCloseSheet}
-        onEdit={handleEditTransaction}
-      />
+          {/* Global Footer */}
+          <div className="fixed bottom-0 left-0 right-0 z-[100]">
+            <GlobalFooter />
+          </div>
     </div>
   );
 }

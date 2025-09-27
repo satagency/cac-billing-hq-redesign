@@ -1,10 +1,30 @@
 'use client';
 
-import { MagnifyingGlass, PencilSimple, Plus } from '@phosphor-icons/react';
+import { MagnifyingGlass, PencilSimple, Plus, ArrowLeft } from '@phosphor-icons/react';
+import { useRouter } from 'next/navigation';
 
-export default function CustomerSearchBar() {
+interface CustomerSearchBarProps {
+  showBackButton?: boolean;
+}
+
+export default function CustomerSearchBar({ showBackButton = false }: CustomerSearchBarProps) {
+  const router = useRouter();
+
   return (
-    <div className="bg-white box-border content-stretch flex gap-[10px] items-start px-[16px] py-[12px] relative size-full" data-name="Search" data-node-id="78:23956">
+    <div className="bg-white box-border content-stretch flex gap-[10px] items-center px-[16px] py-[12px] relative size-full" data-name="Search" data-node-id="78:23956">
+      {showBackButton && (
+        <div className="content-stretch flex gap-[10px] items-center justify-center relative shrink-0" data-node-id="157:29672">
+          <button 
+            onClick={() => router.back()}
+            className="flex items-center gap-[10px] hover:opacity-80 transition-opacity"
+          >
+            <ArrowLeft size={16} className="text-[#0380d9]" />
+            <span className="font-['Inter:Semi_Bold',_sans-serif] font-semibold text-[#0380d9] text-[15px] underline">
+              Back
+            </span>
+          </button>
+        </div>
+      )}
       <button className="box-border content-stretch cursor-pointer flex h-[48px] items-center overflow-visible p-0 relative rounded-[14px] shrink-0 w-[789px]" data-name="Search - Default" data-node-id="78:23944">
         <div aria-hidden="true" className="absolute border border-[#c6c6c6] border-solid inset-0 pointer-events-none rounded-[14px]" />
         <div className="box-border content-stretch flex gap-[16px] items-center justify-center p-[16px] relative shrink-0" data-name="Search icon" data-node-id="I78:23944;11988:340981">

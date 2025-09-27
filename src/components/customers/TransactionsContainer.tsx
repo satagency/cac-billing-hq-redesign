@@ -98,7 +98,7 @@ export default function TransactionsContainer({ onTransactionClick }: Transactio
         return (
           <div className="flex flex-col flex-1 p-5" data-name="Transactions List Container" data-node-id="13:622">
             {/* Transactions List Header Container */}
-            <div className="box-border content-stretch flex items-center justify-between pl-[16px] pr-[4px] pt-[24px] pb-[24px] relative" data-name="Transactions List Header Container" data-node-id="57:39684">
+            <div className="box-border content-stretch flex items-center justify-between pl-[16px] pr-[4px] pt-[12px] pb-[24px] relative" data-name="Transactions List Header Container" data-node-id="57:39684">
               <div className="content-stretch flex flex-col gap-[4px] items-start leading-[18px] not-italic relative shrink-0 tracking-[0.16px] w-[531px]" data-name="Transactions List Header" data-node-id="57:40510">
                 <p className="font-['Inter:Semi_Bold',_sans-serif] font-semibold relative shrink-0 text-[22px] text-black w-[202px]" data-node-id="57:1042">
                   Transactions

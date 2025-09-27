@@ -7,7 +7,7 @@ export default function Reports() {
         <h1>Reports</h1>
         <p>Waiting for Figma designs...</p>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 z-10">
+      <div className="fixed bottom-0 left-0 right-0 z-[100]">
         <GlobalFooter />
       </div>
     </div>

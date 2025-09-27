@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
 import SearchBar from '@/components/ui/SearchBar';
+import DataTable from '@/components/ui/DataTable';
 
 // Page Header Component from Figma
 const PageHeader = () => {
@@ -180,70 +182,162 @@ const FilterSection = () => {
 };
 
 export default function Customers() {
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
+  // Mock customer data - with customers having multiple service addresses
+  const customers = [
+    { 
+      id: '1', 
+      accountNumber: 'AC1007', 
+      customerName: 'Amy Brown', 
+      serviceAddress: '9808 Main Street...', 
+      serviceAddressFull: '9808 Main Street, Scranton, PA 18503',
+      mailingAddress: '9808 Main Street...', 
+      mailingAddressFull: '9808 Main Street, Scranton, PA 18503',
+      contact: '(123) 123-1234', 
+      properties: '2 Properties, 3 Meters' 
+    },
+    { 
+      id: '2', 
+      accountNumber: 'AC1008', 
+      customerName: 'John Smith', 
+      serviceAddress: '123 Oak Avenue...', 
+      serviceAddressFull: '123 Oak Avenue, Scranton, PA 18504\n456 Pine Street, Scranton, PA 18505',
+      mailingAddress: '456 Pine Street...', 
+      mailingAddressFull: '456 Pine Street, Scranton, PA 18505',
+      contact: '(234) 567-8901', 
+      properties: '2 Properties, 5 Meters' 
+    },
+    { 
+      id: '3', 
+      accountNumber: 'AC1009', 
+      customerName: 'Sara Johnson', 
+      serviceAddress: '456 Maple Lane...', 
+      serviceAddressFull: '456 Maple Lane, Scranton, PA 18506\n789 Oak Street, Scranton, PA 18507',
+      mailingAddress: '456 Maple Lane...', 
+      mailingAddressFull: '456 Maple Lane, Scranton, PA 18506',
+      contact: '(345) 678-9012', 
+      properties: '2 Properties, 2 Meters' 
+    },
+    { 
+      id: '4', 
+      accountNumber: 'AC1010', 
+      customerName: 'Michael Lee', 
+      serviceAddress: '789 Pine Street...', 
+      serviceAddressFull: '789 Pine Street, Scranton, PA 18507\n321 Elm Avenue, Scranton, PA 18508',
+      mailingAddress: '321 Elm Avenue...', 
+      mailingAddressFull: '321 Elm Avenue, Scranton, PA 18508',
+      contact: '(456) 789-0123', 
+      properties: '2 Properties, 3 Meters' 
+    },
+    { 
+      id: '5', 
+      accountNumber: 'AC1011', 
+      customerName: 'Emily Davis', 
+      serviceAddress: '321 Elm Avenue...', 
+      serviceAddressFull: '321 Elm Avenue, Scranton, PA 18509',
+      mailingAddress: '321 Elm Avenue...', 
+      mailingAddressFull: '321 Elm Avenue, Scranton, PA 18509',
+      contact: '(567) 890-1234', 
+      properties: '2 Properties, 4 Meters' 
+    },
+    { 
+      id: '6', 
+      accountNumber: 'AC1012', 
+      customerName: 'Chris Wilson', 
+      serviceAddress: '654 Oak Drive...', 
+      serviceAddressFull: '654 Oak Drive, Scranton, PA 18510\n987 Cedar Road, Scranton, PA 18511\n147 Birch Lane, Scranton, PA 18512',
+      mailingAddress: '987 Cedar Road...', 
+      mailingAddressFull: '987 Cedar Road, Scranton, PA 18511',
+      contact: '(678) 901-2345', 
+      properties: '3 Properties, 1 Meter' 
+    },
+    { 
+      id: '7', 
+      accountNumber: 'AC1013', 
+      customerName: 'Laura Garcia', 
+      serviceAddress: '987 Cedar Road...', 
+      serviceAddressFull: '987 Cedar Road, Scranton, PA 18512',
+      mailingAddress: '987 Cedar Road...', 
+      mailingAddressFull: '987 Cedar Road, Scranton, PA 18512',
+      contact: '(789) 012-3456', 
+      properties: '1 Property, 2 Meters' 
+    },
+    { 
+      id: '8', 
+      accountNumber: 'AC1014', 
+      customerName: 'David Martinez', 
+      serviceAddress: '147 Birch Lane...', 
+      serviceAddressFull: '147 Birch Lane, Scranton, PA 18513\n258 Willow Way, Scranton, PA 18514',
+      mailingAddress: '258 Willow Way...', 
+      mailingAddressFull: '258 Willow Way, Scranton, PA 18514',
+      contact: '(890) 123-4567', 
+      properties: '2 Properties, 3 Meters' 
+    },
+    { 
+      id: '9', 
+      accountNumber: 'AC1015', 
+      customerName: 'Sophia Taylor', 
+      serviceAddress: '258 Willow Way...', 
+      serviceAddressFull: '258 Willow Way, Scranton, PA 18515',
+      mailingAddress: '258 Willow Way...', 
+      mailingAddressFull: '258 Willow Way, Scranton, PA 18515',
+      contact: '(901) 234-5678', 
+      properties: '1 Property, 1 Meter' 
+    },
+  ];
+
+  // Table columns configuration - matching Figma design
+  const columns = [
+    { key: 'actions', label: 'Actions', sortable: false },
+    { key: 'accountNumber', label: 'Account', sortable: true },
+    { key: 'customerName', label: 'Customer', sortable: true },
+    { key: 'serviceAddress', label: 'Service Address', sortable: true },
+    { key: 'mailingAddress', label: 'Mailing Address', sortable: true },
+    { key: 'contact', label: 'Contact', sortable: true },
+    { key: 'properties', label: 'Properties', sortable: false },
+  ];
+
+  // Calculate pagination
+  const totalItems = customers.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = customers.slice(startIndex, endIndex);
+
+  const handleRowClick = (customer: any) => {
+    router.push(`/customers/${customer.id}`);
+  };
+
+  const handleViewClick = (customer: any) => {
+    router.push(`/customers/${customer.id}`);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="min-h-screen bg-white relative">
       <Header />
       <PageHeader />
       <FilterSection />
-      <SearchBar 
-        showBackButton={false}
-        searchPlaceholder="Search customers by number, name, service address, mailing address..."
-        editButtonText="Edit"
-        newButtonText="New Customer"
-      />
-          <div className="pb-[50px] px-[16px]">
-            <div className="w-full">
-              {/* Table Headers */}
-              <div className="flex bg-gray-50 border-b border-gray-200 px-4 py-3">
-                <div className="w-32 font-semibold text-sm text-gray-700">Account Number</div>
-                <div className="flex-1 font-semibold text-sm text-gray-700">Customer Name</div>
-                <div className="flex-1 font-semibold text-sm text-gray-700">Mailing Address</div>
-                <div className="flex-1 font-semibold text-sm text-gray-700">Service Address</div>
-                <div className="w-24 font-semibold text-sm text-gray-700">Meter Number</div>
-                <div className="w-24 font-semibold text-sm text-gray-700">Parcel Number</div>
-                <div className="w-20 font-semibold text-sm text-gray-700">Status</div>
-              </div>
-
-              {/* Table Rows */}
-              <div className="max-h-[400px] overflow-y-auto">
-                {[
-                  { id: '1', accountNumber: 'AC1001', customerName: 'John Smith', mailingAddress: '123 Main St, Anytown, ST 12345', serviceAddress: '123 Main St, Anytown, ST 12345', meterNumber: 'M001', parcelNumber: 'P001', status: 'Active' },
-                  { id: '2', accountNumber: 'AC1002', customerName: 'Jane Doe', mailingAddress: '456 Oak Ave, Anytown, ST 12345', serviceAddress: '456 Oak Ave, Anytown, ST 12345', meterNumber: 'M002', parcelNumber: 'P002', status: 'Active' },
-                  { id: '3', accountNumber: 'AC1003', customerName: 'Bob Johnson', mailingAddress: '789 Pine Rd, Anytown, ST 12345', serviceAddress: '789 Pine Rd, Anytown, ST 12345', meterNumber: 'M003', parcelNumber: 'P003', status: 'Inactive' },
-                  { id: '4', accountNumber: 'AC1004', customerName: 'Alice Brown', mailingAddress: '321 Elm St, Anytown, ST 12345', serviceAddress: '321 Elm St, Anytown, ST 12345', meterNumber: 'M004', parcelNumber: 'P004', status: 'Active' },
-                  { id: '5', accountNumber: 'AC1005', customerName: 'Charlie Wilson', mailingAddress: '654 Maple Dr, Anytown, ST 12345', serviceAddress: '654 Maple Dr, Anytown, ST 12345', meterNumber: 'M005', parcelNumber: 'P005', status: 'Active' },
-                  { id: '6', accountNumber: 'AC1006', customerName: 'Diana Davis', mailingAddress: '987 Cedar Ln, Anytown, ST 12345', serviceAddress: '987 Cedar Ln, Anytown, ST 12345', meterNumber: 'M006', parcelNumber: 'P006', status: 'Active' },
-                  { id: '7', accountNumber: 'AC1007', customerName: 'Amy Brown', mailingAddress: '1292 West Berry Street, Scranton, PA 38299', serviceAddress: '1292 West Berry Street, Scranton, PA 38299', meterNumber: 'M007', parcelNumber: 'P007', status: 'Active' },
-                  { id: '8', accountNumber: 'AC1008', customerName: 'Frank Miller', mailingAddress: '555 Birch Blvd, Anytown, ST 12345', serviceAddress: '555 Birch Blvd, Anytown, ST 12345', meterNumber: 'M008', parcelNumber: 'P008', status: 'Inactive' },
-                  { id: '9', accountNumber: 'AC1009', customerName: 'Grace Taylor', mailingAddress: '777 Spruce St, Anytown, ST 12345', serviceAddress: '777 Spruce St, Anytown, ST 12345', meterNumber: 'M009', parcelNumber: 'P009', status: 'Active' },
-                  { id: '10', accountNumber: 'AC1010', customerName: 'Henry Anderson', mailingAddress: '888 Willow Way, Anytown, ST 12345', serviceAddress: '888 Willow Way, Anytown, ST 12345', meterNumber: 'M010', parcelNumber: 'P010', status: 'Active' },
-                ].map((customer) => (
-                  <div
-                    key={customer.id}
-                    onClick={() => window.location.href = `/customers/${customer.id}`}
-                    className="flex border-b border-gray-100 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors"
-                  >
-                    <div className="w-32 text-sm text-gray-900">{customer.accountNumber}</div>
-                    <div className="flex-1 text-sm text-gray-900">{customer.customerName}</div>
-                    <div className="flex-1 text-sm text-gray-600">{customer.mailingAddress}</div>
-                    <div className="flex-1 text-sm text-gray-600">{customer.serviceAddress}</div>
-                    <div className="w-24 text-sm text-gray-900">{customer.meterNumber}</div>
-                    <div className="w-24 text-sm text-gray-900">{customer.parcelNumber}</div>
-                    <div className="w-20">
-                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                        customer.status === 'Active' 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        {customer.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-      <div className="fixed bottom-0 left-0 right-0 z-10">
+      <div className="pb-[50px] px-[16px]">
+        <DataTable
+          columns={columns}
+          data={currentData}
+          onRowClick={handleRowClick}
+          onViewClick={handleViewClick}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+        />
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 z-[100]">
         <GlobalFooter />
       </div>
     </div>

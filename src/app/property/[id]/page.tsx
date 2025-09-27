@@ -91,7 +91,7 @@ export default function PropertyProfilePage() {
       </div>
 
       {/* Global Footer */}
-      <div className="fixed bottom-0 left-0 right-0 z-10">
+      <div className="fixed bottom-0 left-0 right-0 z-[100]">
         <GlobalFooter />
       </div>
     </div>

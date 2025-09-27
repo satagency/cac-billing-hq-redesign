@@ -31,7 +31,7 @@ interface CustomerInfoAndPaymentDueProps {
 export default function CustomerInfoAndPaymentDue({ customer, billingData }: CustomerInfoAndPaymentDueProps) {
   return (
     <div className="relative w-full" data-name="Customer Info and Payment Due" data-node-id="13:600">
-      <div className="box-border content-stretch flex gap-[24px] items-start max-h-inherit pb-[24px] pt-[16px] px-[16px] relative w-full">
+      <div className="box-border content-stretch flex gap-[24px] items-start max-h-inherit py-[8px] px-[16px] relative w-full">
         {/* Personal Info Section */}
         <div className="basis-0 content-stretch flex flex-col gap-[16px] grow h-[154px] items-start min-h-px min-w-px relative shrink-0 flex-1" data-name="Personal Info" data-node-id="13:7477">
           {/* Customer Name and ID */}
