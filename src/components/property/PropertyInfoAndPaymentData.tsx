@@ -1,10 +1,5 @@
 'use client';
 
-const img = "http://localhost:3845/assets/f00973188be300094edc1f680e08a33239d7c42c.svg";
-const img1 = "http://localhost:3845/assets/5c200e6ed8b16d578a60fcc216c6e72e0761f53f.svg";
-const img2 = "http://localhost:3845/assets/37c20e6ed8b16d578a60fcc216c6e72e0761f53f.svg";
-const img3 = "http://localhost:3845/assets/41e3730a4661dfbe3087bd56d763201b2450dac6.svg";
-const img4 = "http://localhost:3845/assets/5d46f315a5dd727138db0aab204dc6d0c7ae9eab.svg";
 
 interface PropertyInfoAndPaymentDataProps {
   property: {

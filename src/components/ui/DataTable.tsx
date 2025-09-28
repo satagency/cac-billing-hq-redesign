@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { CaretRight, Eye } from '@phosphor-icons/react';
 
 // Image assets from Figma
 const imgSort = "http://localhost:3845/assets/83c530a5d92a2be90173b85ac47e6bf095de6dd1.svg";
@@ -19,9 +18,9 @@ interface Column {
 
 interface DataTableProps {
   columns: Column[];
-  data: any[];
-  onRowClick?: (row: any) => void;
-  onViewClick?: (row: any) => void;
+  data: Record<string, unknown>[];
+  onRowClick?: (row: Record<string, unknown>) => void;
+  onViewClick?: (row: Record<string, unknown>) => void;
   currentPage?: number;
   totalPages?: number;
   totalItems?: number;
@@ -165,7 +164,7 @@ export default function DataTable({
                           <div className="box-border content-stretch flex items-center pl-0 pr-[4px] py-0 relative rounded-[24px] shrink-0" data-name="Tag content">
                             <div className="box-border content-stretch flex flex-col items-center mr-[-4px] pb-[2px] pt-0 px-[8px] relative shrink-0" data-name="Label">
                               <p className="font-['IBM_Plex_Sans:Regular',_sans-serif] leading-[16px] not-italic relative shrink-0 text-[#0043ce] text-[12px] text-nowrap tracking-[0.32px] whitespace-pre">
-                                {row[column.key].split(',')[0].trim()}
+                                {String(row[column.key]).split(',')[0].trim()}
                               </p>
                             </div>
                           </div>
@@ -177,7 +176,7 @@ export default function DataTable({
                           <div className="box-border content-stretch flex items-center pl-0 pr-[4px] py-0 relative rounded-[24px] shrink-0" data-name="Tag content">
                             <div className="box-border content-stretch flex flex-col items-center mr-[-4px] pb-[2px] pt-0 px-[8px] relative shrink-0" data-name="Label">
                               <p className="font-['IBM_Plex_Sans:Regular',_sans-serif] leading-[16px] not-italic relative shrink-0 text-[#0e6027] text-[12px] text-nowrap tracking-[0.32px] whitespace-pre">
-                                {row[column.key].split(',')[1].trim()}
+                                {String(row[column.key]).split(',')[1].trim()}
                               </p>
                             </div>
                           </div>
@@ -189,12 +188,12 @@ export default function DataTable({
                       {(column.key.includes('Address') || column.key.includes('address')) && row[`${column.key}Full`] ? (
                         <div className="relative tooltip-group">
                           <p className="leading-[18px] whitespace-pre overflow-ellipsis overflow-hidden cursor-help">
-                            {row[column.key]}
+                            {String(row[column.key])}
                           </p>
                           {/* Tooltip */}
                           <div className="absolute bottom-full left-0 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 tooltip-group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-pre-line w-full min-w-max">
                             <div className="space-y-2">
-                              {row[`${column.key}Full`].split('\n').map((address, index) => (
+                              {String(row[`${column.key}Full`]).split('\n').map((address, index) => (
                                 <div key={index} className="block">
                                   {address}
                                 </div>
@@ -205,7 +204,7 @@ export default function DataTable({
                         </div>
                       ) : (
                         <p className="leading-[18px] whitespace-pre overflow-ellipsis overflow-hidden">
-                          {row[column.key]}
+                          {String(row[column.key])}
                         </p>
                       )}
                     </div>

@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
-import SearchBar from '@/components/ui/SearchBar';
 import DataTable from '@/components/ui/DataTable';
+
 
 // Page Header Component from Figma
 const PageHeader = () => {
@@ -291,13 +291,13 @@ export default function Customers() {
 
   // Table columns configuration - matching Figma design
   const columns = [
-    { key: 'actions', label: 'Actions', sortable: false },
-    { key: 'accountNumber', label: 'Account', sortable: true },
-    { key: 'customerName', label: 'Customer', sortable: true },
-    { key: 'serviceAddress', label: 'Service Address', sortable: true },
-    { key: 'mailingAddress', label: 'Mailing Address', sortable: true },
-    { key: 'contact', label: 'Contact', sortable: true },
-    { key: 'properties', label: 'Properties', sortable: false },
+    { key: 'actions', label: 'Actions', width: '100px', sortable: false },
+    { key: 'accountNumber', label: 'Account', width: '120px', sortable: true },
+    { key: 'customerName', label: 'Customer', width: '150px', sortable: true },
+    { key: 'serviceAddress', label: 'Service Address', width: '200px', sortable: true },
+    { key: 'mailingAddress', label: 'Mailing Address', width: '200px', sortable: true },
+    { key: 'contact', label: 'Contact', width: '120px', sortable: true },
+    { key: 'properties', label: 'Properties', width: '150px', sortable: false },
   ];
 
   // Calculate pagination
@@ -307,12 +307,12 @@ export default function Customers() {
   const endIndex = startIndex + itemsPerPage;
   const currentData = customers.slice(startIndex, endIndex);
 
-  const handleRowClick = (customer: any) => {
-    router.push(`/customers/${customer.id}`);
+  const handleRowClick = (row: Record<string, unknown>) => {
+    router.push(`/customers/${row.id}`);
   };
 
-  const handleViewClick = (customer: any) => {
-    router.push(`/customers/${customer.id}`);
+  const handleViewClick = (row: Record<string, unknown>) => {
+    router.push(`/customers/${row.id}`);
   };
 
   const handlePageChange = (page: number) => {

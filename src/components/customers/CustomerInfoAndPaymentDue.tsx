@@ -2,8 +2,6 @@
 
 import { CreditCard, Sliders, FileText, ChatCircle, LinkSimple } from '@phosphor-icons/react';
 
-const img = "http://localhost:3845/assets/7e12644f5d4bc45f7e30c1124fcbf91ab4c8349f.svg";
-const img1 = "http://localhost:3845/assets/a0f467b4b321e37e21f8a9e6824e16a9e98c4c8a.svg";
 
 interface CustomerInfoAndPaymentDueProps {
   customer: {

@@ -6,6 +6,7 @@ import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
 import DataTable from '@/components/ui/DataTable';
 
+
 // Page Header Component from Figma
 const PageHeader = () => {
   return (
@@ -217,12 +218,12 @@ export default function Property() {
   const endIndex = startIndex + itemsPerPage;
   const currentData = properties.slice(startIndex, endIndex);
 
-  const handleRowClick = (property: any) => {
-    router.push(`/property/${property.id}`);
+  const handleRowClick = (row: Record<string, unknown>) => {
+    router.push(`/property/${row.id}`);
   };
 
-  const handleViewClick = (property: any) => {
-    router.push(`/property/${property.id}`);
+  const handleViewClick = (row: Record<string, unknown>) => {
+    router.push(`/property/${row.id}`);
   };
 
   const handlePageChange = (page: number) => {

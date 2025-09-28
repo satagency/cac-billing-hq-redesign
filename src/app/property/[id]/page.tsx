@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React from 'react';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
 import SearchBar from '@/components/ui/SearchBar';
@@ -8,15 +8,6 @@ import PropertyInfoAndPaymentData from '@/components/property/PropertyInfoAndPay
 import PropertyDataContainer from '@/components/property/PropertyDataContainer';
 
 // Transaction interface
-interface Transaction {
-  id: string;
-  date: string;
-  reference: string;
-  description: string;
-  type: string;
-  amount: number;
-  runningBalance: number;
-}
 
 // Mock property data - in a real app, this would come from an API
 const mockProperty = {
@@ -43,21 +34,8 @@ const mockPropertyData = {
 
 
 export default function PropertyProfilePage() {
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-
-  const handleTransactionClick = (transaction: Transaction) => {
-    setSelectedTransaction(transaction);
-    setIsSheetOpen(true);
-  };
-
-  const handleCloseSheet = () => {
-    setIsSheetOpen(false);
-    setSelectedTransaction(null);
-  };
-
-  const handleEditTransaction = () => {
-    console.log('Edit transaction:', selectedTransaction);
+  const handleTransactionClick = (transaction: { id: string; date: string; reference: string; description: string; type: string; amount: number; balance: number; }) => {
+    console.log('Transaction clicked:', transaction);
   };
 
   return (

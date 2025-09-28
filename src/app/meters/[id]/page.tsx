@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React from 'react';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
 import SearchBar from '@/components/ui/SearchBar';
@@ -8,15 +8,6 @@ import MeterInfoAndUsageData from '@/components/meters/MeterInfoAndUsageData';
 import MeterDataContainer from '@/components/meters/MeterDataContainer';
 
 // Transaction interface
-interface Transaction {
-  id: string;
-  date: string;
-  reference: string;
-  description: string;
-  type: string;
-  amount: number;
-  runningBalance: number;
-}
 
 // Mock meter data - in a real app, this would come from an API
 const mockMeter = {
@@ -45,21 +36,8 @@ const mockMeterData = {
 
 
 export default function MeterProfilePage() {
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-
-  const handleTransactionClick = (transaction: Transaction) => {
-    setSelectedTransaction(transaction);
-    setIsSheetOpen(true);
-  };
-
-  const handleCloseSheet = () => {
-    setIsSheetOpen(false);
-    setSelectedTransaction(null);
-  };
-
-  const handleEditTransaction = () => {
-    console.log('Edit transaction:', selectedTransaction);
+  const handleReadingClick = (reading: { id: string; date: string; reading: number; usage: number; type: string; technician: string; notes: string; }) => {
+    console.log('Reading clicked:', reading);
   };
 
   return (
@@ -86,7 +64,7 @@ export default function MeterProfilePage() {
           <div className="flex gap-4 w-full h-[600px] overflow-hidden" data-name="Details and Tabbed Content" data-node-id="13:601">
             {/* Meter Data Container */}
             <div className="flex-1 min-w-0 h-full overflow-hidden" data-name="Meter Data Container" data-node-id="13:605">
-              <MeterDataContainer onReadingClick={handleTransactionClick} />
+              <MeterDataContainer onReadingClick={handleReadingClick} />
             </div>
           </div>
         </div>
