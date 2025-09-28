@@ -20,7 +20,9 @@ const mockProperty = {
   status: 'Active',
   address: '12920 Third Street Scranton, PA 30390',
   createdDate: '1/15/2010',
+  installedDate: '1/15/2010',
   currentReading: 250000,
+  previousReading: 248000,
   propertyType: 'House',
   size: '2,500 sq ft',
   coordinates: { lat: 40.054300, lng: -75.062100 },
@@ -28,6 +30,12 @@ const mockProperty = {
     current: 1450.83,
     allTime: 79715.91,
     temperature: 1995
+  },
+  customer: {
+    name: 'John Smith',
+    id: 'CUST001',
+    email: 'john.smith@email.com',
+    phone: '(555) 123-4567'
   }
 };
 
