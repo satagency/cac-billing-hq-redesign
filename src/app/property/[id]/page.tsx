@@ -40,11 +40,13 @@ const mockProperty = {
 };
 
 const mockPropertyData = {
-  nextPaymentDue: 425.50,
-  pastDue: 0,
-  lastPayment: {
-    amount: 425.50,
+  currentReading: 250000,
+  lastReading: 248000,
+  usage: 2000,
+  nextReading: 252000,
+  lastReadingDate: {
     date: '11/15',
+    amount: 425.50,
   },
   services: [
     { name: 'Property Tax', current: 350.00, pastDue: 0 },
