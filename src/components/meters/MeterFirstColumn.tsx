@@ -187,7 +187,7 @@ export default function MeterFirstColumn() {
                 </p>
                 <div className="content-stretch flex flex-col gap-[4px] items-start justify-center relative shrink-0 w-full" data-node-id="106:26210">
                   <p className="font-['Inter:Medium',_sans-serif] font-medium leading-[18px] not-italic relative shrink-0 text-[14px] text-black text-nowrap tracking-[0.16px] whitespace-pre" data-node-id="106:26211">
-                    1.5"
+                    1.5&quot;
                   </p>
                 </div>
               </div>
