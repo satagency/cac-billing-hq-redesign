@@ -6,16 +6,29 @@ import GlobalFooter from '@/components/ui/GlobalFooter';
 import SearchBar from '@/components/ui/SearchBar';
 import PropertyInfoAndPaymentData from '@/components/property/PropertyInfoAndPaymentData';
 import PropertyDataContainer from '@/components/property/PropertyDataContainer';
+import PropertyFirstColumn from '@/components/property/PropertyFirstColumn';
 
 // Transaction interface
 
 // Mock property data - in a real app, this would come from an API
 const mockProperty = {
   name: 'Property #789012',
-  accountNumber: 'PROP-789012',
+  propertyNumber: 'PR-3029031',
+  serialNumber: 'SN0903904-93',
+  model: 'Residential Property',
+  type: 'Residential',
   status: 'Active',
   address: '12920 Third Street Scranton, PA 30390',
   createdDate: '1/15/2010',
+  currentReading: 250000,
+  propertyType: 'House',
+  size: '2,500 sq ft',
+  coordinates: { lat: 40.054300, lng: -75.062100 },
+  consumption: {
+    current: 1450.83,
+    allTime: 79715.91,
+    temperature: 1995
+  }
 };
 
 const mockPropertyData = {
@@ -60,6 +73,9 @@ export default function PropertyProfilePage() {
 
           {/* Details and Tabbed Content */}
           <div className="flex gap-4 w-full h-[600px] overflow-hidden" data-name="Details and Tabbed Content" data-node-id="13:601">
+            {/* First Column - Property Details */}
+            <PropertyFirstColumn />
+            
             {/* Property Data Container */}
             <div className="flex-1 min-w-0 h-full overflow-hidden" data-name="Property Data Container" data-node-id="13:605">
               <PropertyDataContainer onTransactionClick={handleTransactionClick} />

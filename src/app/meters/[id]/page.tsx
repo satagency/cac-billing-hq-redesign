@@ -6,16 +6,29 @@ import GlobalFooter from '@/components/ui/GlobalFooter';
 import SearchBar from '@/components/ui/SearchBar';
 import MeterInfoAndUsageData from '@/components/meters/MeterInfoAndUsageData';
 import MeterDataContainer from '@/components/meters/MeterDataContainer';
+import MeterFirstColumn from '@/components/meters/MeterFirstColumn';
 
 // Transaction interface
 
 // Mock meter data - in a real app, this would come from an API
 const mockMeter = {
   name: 'Water Meter #12345',
-  meterNumber: 'WM-12345',
+  meterNumber: 'WM-3029031',
+  serialNumber: 'SN0903904-93',
+  model: 'iTron Water125',
+  type: 'Residential',
   status: 'Active',
   address: '12920 Third Street Scranton, PA 30390',
   installedDate: '3/15/2015',
+  currentReading: 98000,
+  meterType: 'Water',
+  size: '1.5"',
+  coordinates: { lat: 40.054300, lng: -75.062100 },
+  consumption: {
+    current: 1450.83,
+    allTime: 79715.91,
+    temperature: 30.2
+  }
 };
 
 const mockMeterData = {
@@ -62,6 +75,9 @@ export default function MeterProfilePage() {
 
           {/* Details and Tabbed Content */}
           <div className="flex gap-4 w-full h-[600px] overflow-hidden" data-name="Details and Tabbed Content" data-node-id="13:601">
+            {/* First Column - Meter Details */}
+            <MeterFirstColumn />
+            
             {/* Meter Data Container */}
             <div className="flex-1 min-w-0 h-full overflow-hidden" data-name="Meter Data Container" data-node-id="13:605">
               <MeterDataContainer onReadingClick={handleReadingClick} />

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import OverviewTabContent from './OverviewTabContent';
 
 const img = "http://localhost:3845/assets/4dc56d693a0956668a100403eda2344bf6a1429f.svg";
 const img1 = "http://localhost:3845/assets/48b583bb96398134891f4917e20796b6bbb64f49.svg";
@@ -33,10 +34,10 @@ interface MeterDataContainerProps {
   onReadingClick?: (reading: MeterReading) => void;
 }
 
-type TabType = 'readings' | 'maintenance' | 'history' | 'alerts' | 'settings' | 'reports';
+type TabType = 'overview' | 'readings' | 'services' | 'consumption' | 'workOrders' | 'alerts';
 
 export default function MeterDataContainer({ onReadingClick }: MeterDataContainerProps) {
-  const [activeTab, setActiveTab] = useState<TabType>('readings');
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
 
   const handleReadingClick = (reading: MeterReading) => {
     if (onReadingClick) {
@@ -66,6 +67,8 @@ export default function MeterDataContainer({ onReadingClick }: MeterDataContaine
 
   const renderTabContent = () => {
     switch (activeTab) {
+      case 'overview':
+        return <OverviewTabContent />;
       case 'readings':
         return (
           <div className="flex flex-col flex-1 overflow-hidden" data-name="Meter Readings List Container" data-node-id="64:40811">
@@ -189,16 +192,14 @@ export default function MeterDataContainer({ onReadingClick }: MeterDataContaine
             </div>
           </div>
         );
-      case 'maintenance':
-        return <PlaceholderContent title="Maintenance" description="View and manage meter maintenance records. Track maintenance schedules, repairs, and service history." />;
-      case 'history':
-        return <PlaceholderContent title="History" description="View complete meter history including all readings, maintenance, and service events." />;
+      case 'services':
+        return <PlaceholderContent title="Services" description="View and manage meter services including water delivery, maintenance services, and service history." />;
+      case 'consumption':
+        return <PlaceholderContent title="Consumption" description="Analyze water consumption patterns, trends, and usage analytics for this meter." />;
+      case 'workOrders':
+        return <PlaceholderContent title="Work Orders" description="View and manage work orders related to this meter including repairs, installations, and maintenance tasks." />;
       case 'alerts':
         return <PlaceholderContent title="Alerts" description="Manage meter alerts and notifications. View active alerts and configure alert settings." />;
-      case 'settings':
-        return <PlaceholderContent title="Settings" description="Configure meter settings, reading intervals, and operational parameters." />;
-      case 'reports':
-        return <PlaceholderContent title="Reports" description="Generate meter reports including usage reports, maintenance reports, and performance analytics." />;
       default:
         return null;
     }
@@ -211,15 +212,32 @@ export default function MeterDataContainer({ onReadingClick }: MeterDataContaine
           {/* Tab Container */}
           <div className="content-stretch flex gap-[6px] items-center relative shrink-0 w-full border-b border-[#C1C1C1] mt-5" data-name="Tab Container" data-node-id="13:610">
           <div className="basis-0 content-stretch flex gap-[6px] grow h-full items-center min-h-px min-w-px relative shrink-0" data-name="Tab Container" data-node-id="13:611">
-            {/* Readings Tab */}
+            {/* Overview Tab */}
             <div 
-              className={`h-full relative shrink-0 w-[139.17px] cursor-pointer transition-colors duration-200 ${activeTab === 'readings' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
+              className={`h-full relative shrink-0 w-[139.17px] cursor-pointer transition-colors duration-200 ${activeTab === 'overview' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
               data-name="Tab" 
               data-node-id="13:612"
-              onClick={() => handleTabClick('readings')}
+              onClick={() => handleTabClick('overview')}
             >
               <div className="box-border content-stretch flex gap-[10px] h-full items-center justify-center overflow-clip p-[10px] relative w-[139.17px]">
-                <p className={`font-['Inter:Regular',_sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[14px] text-center text-nowrap whitespace-pre transition-colors duration-200 ${activeTab === 'readings' ? 'text-black' : 'text-[rgba(0,0,0,0.35)] hover:text-[#121212]'}`} data-node-id="13:613">
+                <p className={`font-['Inter:Regular',_sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[14px] text-center text-nowrap whitespace-pre transition-colors duration-200 ${activeTab === 'overview' ? 'text-black' : 'text-[rgba(0,0,0,0.35)] hover:text-[#121212]'}`} data-node-id="13:613">
+                  Overview
+                </p>
+              </div>
+              {activeTab === 'overview' && (
+                <div aria-hidden="true" className="absolute border-[1px_1px_0px] border-[rgba(0,0,0,0.2)] border-solid inset-0 pointer-events-none" />
+              )}
+            </div>
+
+            {/* Readings Tab */}
+            <div 
+              className={`box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center overflow-clip p-[10px] relative shrink-0 w-[139.167px] cursor-pointer transition-colors duration-200 ${activeTab === 'readings' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
+              data-name="Tabs" 
+              data-node-id="73:42092"
+              onClick={() => handleTabClick('readings')}
+            >
+              <div className="box-border content-stretch flex gap-[10px] items-center justify-center p-[10px] relative size-full" data-name="Property 1=Default" data-node-id="73:42078">
+                <p className={`font-['Inter:Regular',_sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[14px] text-center text-nowrap whitespace-pre transition-colors duration-200 ${activeTab === 'readings' ? 'text-black' : 'text-[rgba(0,0,0,0.35)] hover:text-[#121212]'}`} data-node-id="13:7832">
                   Readings
                 </p>
               </div>
@@ -228,36 +246,53 @@ export default function MeterDataContainer({ onReadingClick }: MeterDataContaine
               )}
             </div>
 
-            {/* Maintenance Tab */}
+            {/* Services Tab */}
             <div 
-              className={`box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center overflow-clip p-[10px] relative shrink-0 w-[139.167px] cursor-pointer transition-colors duration-200 ${activeTab === 'maintenance' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
+              className={`box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center overflow-clip p-[10px] relative shrink-0 w-[139.167px] cursor-pointer transition-colors duration-200 ${activeTab === 'services' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
               data-name="Tabs" 
-              data-node-id="73:42092"
-              onClick={() => handleTabClick('maintenance')}
+              data-node-id="73:42089"
+              onClick={() => handleTabClick('services')}
             >
               <div className="box-border content-stretch flex gap-[10px] items-center justify-center p-[10px] relative size-full" data-name="Property 1=Default" data-node-id="73:42078">
-                <p className={`font-['Inter:Regular',_sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[14px] text-center text-nowrap whitespace-pre transition-colors duration-200 ${activeTab === 'maintenance' ? 'text-black' : 'text-[rgba(0,0,0,0.35)] hover:text-[#121212]'}`} data-node-id="13:7832">
-                  Maintenance
+                <p className={`font-['Inter:Regular',_sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[14px] text-center text-nowrap whitespace-pre transition-colors duration-200 ${activeTab === 'services' ? 'text-black' : 'text-[rgba(0,0,0,0.35)] hover:text-[#121212]'}`} data-node-id="13:7832">
+                  Services
                 </p>
               </div>
-              {activeTab === 'maintenance' && (
+              {activeTab === 'services' && (
                 <div aria-hidden="true" className="absolute border-[1px_1px_0px] border-[rgba(0,0,0,0.2)] border-solid inset-0 pointer-events-none" />
               )}
             </div>
 
-            {/* History Tab */}
+            {/* Consumption Tab */}
             <div 
-              className={`box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center overflow-clip p-[10px] relative shrink-0 w-[139.167px] cursor-pointer transition-colors duration-200 ${activeTab === 'history' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
+              className={`box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center overflow-clip p-[10px] relative shrink-0 w-[139.167px] cursor-pointer transition-colors duration-200 ${activeTab === 'consumption' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
               data-name="Tabs" 
-              data-node-id="73:42089"
-              onClick={() => handleTabClick('history')}
+              data-node-id="73:42095"
+              onClick={() => handleTabClick('consumption')}
             >
               <div className="box-border content-stretch flex gap-[10px] items-center justify-center p-[10px] relative size-full" data-name="Property 1=Default" data-node-id="73:42078">
-                <p className={`font-['Inter:Regular',_sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[14px] text-center text-nowrap whitespace-pre transition-colors duration-200 ${activeTab === 'history' ? 'text-black' : 'text-[rgba(0,0,0,0.35)] hover:text-[#121212]'}`} data-node-id="13:7832">
-                  History
+                <p className={`font-['Inter:Regular',_sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[14px] text-center text-nowrap whitespace-pre transition-colors duration-200 ${activeTab === 'consumption' ? 'text-black' : 'text-[rgba(0,0,0,0.35)] hover:text-[#121212]'}`} data-node-id="13:7832">
+                  Consumption
                 </p>
               </div>
-              {activeTab === 'history' && (
+              {activeTab === 'consumption' && (
+                <div aria-hidden="true" className="absolute border-[1px_1px_0px] border-[rgba(0,0,0,0.2)] border-solid inset-0 pointer-events-none" />
+              )}
+            </div>
+
+            {/* Work Orders Tab */}
+            <div 
+              className={`box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center overflow-clip p-[10px] relative shrink-0 w-[139.167px] cursor-pointer transition-colors duration-200 ${activeTab === 'workOrders' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
+              data-name="Tabs" 
+              data-node-id="73:42098"
+              onClick={() => handleTabClick('workOrders')}
+            >
+              <div className="box-border content-stretch flex gap-[10px] items-center justify-center p-[10px] relative size-full" data-name="Property 1=Default" data-node-id="73:42078">
+                <p className={`font-['Inter:Regular',_sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[14px] text-center text-nowrap whitespace-pre transition-colors duration-200 ${activeTab === 'workOrders' ? 'text-black' : 'text-[rgba(0,0,0,0.35)] hover:text-[#121212]'}`} data-node-id="13:7832">
+                  Work Orders
+                </p>
+              </div>
+              {activeTab === 'workOrders' && (
                 <div aria-hidden="true" className="absolute border-[1px_1px_0px] border-[rgba(0,0,0,0.2)] border-solid inset-0 pointer-events-none" />
               )}
             </div>
@@ -266,7 +301,7 @@ export default function MeterDataContainer({ onReadingClick }: MeterDataContaine
             <div 
               className={`box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center overflow-clip p-[10px] relative shrink-0 w-[139.167px] cursor-pointer transition-colors duration-200 ${activeTab === 'alerts' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
               data-name="Tabs" 
-              data-node-id="73:42095"
+              data-node-id="73:42101"
               onClick={() => handleTabClick('alerts')}
             >
               <div className="box-border content-stretch flex gap-[10px] items-center justify-center p-[10px] relative size-full" data-name="Property 1=Default" data-node-id="73:42078">
@@ -275,40 +310,6 @@ export default function MeterDataContainer({ onReadingClick }: MeterDataContaine
                 </p>
               </div>
               {activeTab === 'alerts' && (
-                <div aria-hidden="true" className="absolute border-[1px_1px_0px] border-[rgba(0,0,0,0.2)] border-solid inset-0 pointer-events-none" />
-              )}
-            </div>
-
-            {/* Settings Tab */}
-            <div 
-              className={`box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center overflow-clip p-[10px] relative shrink-0 w-[139.167px] cursor-pointer transition-colors duration-200 ${activeTab === 'settings' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
-              data-name="Tabs" 
-              data-node-id="73:42098"
-              onClick={() => handleTabClick('settings')}
-            >
-              <div className="box-border content-stretch flex gap-[10px] items-center justify-center p-[10px] relative size-full" data-name="Property 1=Default" data-node-id="73:42078">
-                <p className={`font-['Inter:Regular',_sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[14px] text-center text-nowrap whitespace-pre transition-colors duration-200 ${activeTab === 'settings' ? 'text-black' : 'text-[rgba(0,0,0,0.35)] hover:text-[#121212]'}`} data-node-id="13:7832">
-                  Settings
-                </p>
-              </div>
-              {activeTab === 'settings' && (
-                <div aria-hidden="true" className="absolute border-[1px_1px_0px] border-[rgba(0,0,0,0.2)] border-solid inset-0 pointer-events-none" />
-              )}
-            </div>
-
-            {/* Reports Tab */}
-            <div 
-              className={`box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center overflow-clip p-[10px] relative shrink-0 w-[139.167px] cursor-pointer transition-colors duration-200 ${activeTab === 'reports' ? 'bg-[#f1f1f1]' : 'bg-transparent'}`}
-              data-name="Tabs" 
-              data-node-id="73:42101"
-              onClick={() => handleTabClick('reports')}
-            >
-              <div className="box-border content-stretch flex gap-[10px] items-center justify-center p-[10px] relative size-full" data-name="Property 1=Default" data-node-id="73:42078">
-                <p className={`font-['Inter:Regular',_sans-serif] font-normal leading-[normal] not-italic relative shrink-0 text-[14px] text-center text-nowrap whitespace-pre transition-colors duration-200 ${activeTab === 'reports' ? 'text-black' : 'text-[rgba(0,0,0,0.35)] hover:text-[#121212]'}`} data-node-id="13:7832">
-                  Reports
-                </p>
-              </div>
-              {activeTab === 'reports' && (
                 <div aria-hidden="true" className="absolute border-[1px_1px_0px] border-[rgba(0,0,0,0.2)] border-solid inset-0 pointer-events-none" />
               )}
             </div>
