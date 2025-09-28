@@ -33,7 +33,7 @@ const mockProperty = {
   },
   customer: {
     name: 'John Smith',
-    id: 'CUST001',
+    accountNumber: 'CUST001',
     email: 'john.smith@email.com',
     phone: '(555) 123-4567'
   }
