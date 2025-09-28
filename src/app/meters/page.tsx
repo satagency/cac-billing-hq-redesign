@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
@@ -185,6 +185,10 @@ export default function Meters() {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+
+  useEffect(() => {
+    document.title = 'Meters | CAC Billing HQ';
+  }, []);
 
   // Mock meter data with address tooltips
   const meters = [

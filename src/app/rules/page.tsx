@@ -1,4 +1,10 @@
 import GlobalFooter from '@/components/ui/GlobalFooter';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Rules | CAC Billing HQ",
+  description: "Municipality billing rules and regulations",
+};
 
 export default function Rules() {
   return (

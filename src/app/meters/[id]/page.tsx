@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
 import SearchBar from '@/components/ui/SearchBar';
@@ -49,6 +49,10 @@ const mockMeterData = {
 
 
 export default function MeterProfilePage() {
+  useEffect(() => {
+    document.title = 'Meter Profile | CAC Billing HQ';
+  }, []);
+
   const handleReadingClick = (reading: { id: string; date: string; reading: number; usage: number; type: string; technician: string; notes: string; }) => {
     console.log('Reading clicked:', reading);
   };

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
 import DataTable from '@/components/ui/DataTable';
@@ -184,6 +185,10 @@ const FilterSection = () => {
 export default function Customers() {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    document.title = 'Customers | CAC Billing HQ';
+  }, []);
   const itemsPerPage = 20;
 
   // Mock customer data - with customers having multiple service addresses

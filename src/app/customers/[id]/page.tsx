@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
 import CustomerSearchBar from '@/components/customers/CustomerSearchBar';
@@ -59,6 +59,10 @@ const mockBillingData = {
 export default function CustomerProfilePage() {
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  useEffect(() => {
+    document.title = 'Customer Profile | CAC Billing HQ';
+  }, []);
 
   const handleTransactionClick = (transaction: Transaction) => {
     setSelectedTransaction(transaction);

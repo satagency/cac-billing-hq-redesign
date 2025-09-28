@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '@/components/ui/header';
 import GlobalFooter from '@/components/ui/GlobalFooter';
 import SearchBar from '@/components/ui/SearchBar';
@@ -57,6 +57,10 @@ const mockPropertyData = {
 
 
 export default function PropertyProfilePage() {
+  useEffect(() => {
+    document.title = 'Property Profile | CAC Billing HQ';
+  }, []);
+
   const handleTransactionClick = (transaction: { id: string; date: string; reference: string; description: string; type: string; amount: number; balance: number; }) => {
     console.log('Transaction clicked:', transaction);
   };
